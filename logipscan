@@ -1,0 +1,6 @@
+#!/bin/bash
+IPS=$(cat $1 | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -r | uniq )
+for IP in $IPS; do
+	HOSTNAME=$(nslookup $IP | grep -v nameserver | cut -f 2 | grep name | cut -f 2 -d "=" | sed 's/ //')
+	echo "$IP from $(geoiplookup $IP) - $HOSTNAME"
+done
